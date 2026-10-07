@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NJ MALL — The Grand Luxury Arcade & Lifestyle Destination</title>
+  <meta name="description" content="Welcome to NJ Mall. India's premier luxury marketplace featuring curated kinetic art, designer lifestyle, ambient living, and exclusive bespoke collections." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2308090d'/><text x='50%' y='65%' font-family='serif' font-weight='bold' font-size='60' fill='%23e0b955' text-anchor='middle'>NJ</text></svg>">
+</head>
+<body>
+
+  <!-- Confetti Canvas for Celebrations -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Admin Status Bar (Visible when Admin is Authenticated) -->
+  <div id="admin-status-bar" class="admin-status-bar">
+    <div class="admin-bar-inner">
+      <span class="admin-badge-indicator">Admin Access Active — You can add, edit & delete products</span>
+      <div style="display: flex; gap: 0.75rem; align-items: center;">
+        <button id="admin-add-product-btn" class="admin-add-product-btn visible">
+          <span>+ Add New Product</span>
+        </button>
+        <button id="admin-logout-btn" class="admin-logout-btn">Log Out Admin</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Announcement Ticker -->
+  <div class="announcement-bar">
+    <div class="ticker-track">
+      <div class="ticker-item">✦ WELCOME TO NJ MALL — INDIA'S PREMIER LUXURY ARCADE ✦</div>
+      <div class="ticker-item">✧ FREE INSURED EXPRESS DELIVERY ACROSS INDIA ON ORDERS OVER ₹2,999 ✧</div>
+      <div class="ticker-item">✦ APPLY CODE "NJ10" AT CHECKOUT FOR 10% WELCOME PRIVILEGE ✦</div>
+      <div class="ticker-item">✦ WELCOME TO NJ MALL — INDIA'S PREMIER LUXURY ARCADE ✦</div>
+      <div class="ticker-item">✧ FREE INSURED EXPRESS DELIVERY ACROSS INDIA ON ORDERS OVER ₹2,999 ✧</div>
+      <div class="ticker-item">✦ APPLY CODE "NJ10" AT CHECKOUT FOR 10% WELCOME PRIVILEGE ✦</div>
+    </div>
+  </div>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-row">
+      <!-- NJ Mall Logo with Handcrafted NJ Monogram SVG -->
+      <a href="#" class="brand-logo" aria-label="NJ Mall Home">
+        <div class="nj-emblem-wrap">
+          <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="njGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fff4d0" />
+                <stop offset="30%" stop-color="#e0b955" />
+                <stop offset="70%" stop-color="#c29528" />
+                <stop offset="100%" stop-color="#f5b041" />
+              </linearGradient>
+              <linearGradient id="njBorderGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#e0b955" stop-opacity="0.8" />
+                <stop offset="50%" stop-color="#ffffff" stop-opacity="0.4" />
+                <stop offset="100%" stop-color="#c29528" stop-opacity="0.9" />
+              </linearGradient>
+            </defs>
+            <!-- Outer Shield / Diamond Frame -->
+            <polygon points="50,4 96,27 96,73 50,96 4,73 4,27" fill="#121520" stroke="url(#njBorderGrad)" stroke-width="2.5" />
+            <!-- Inner subtle octagon accent -->
+            <polygon points="50,11 88,31 88,69 50,89 12,69 12,31" stroke="rgba(224,185,85,0.25)" stroke-width="1" />
+            
+            <!-- Crest Star Accent -->
+            <path d="M50 14 L52 18 L56 19 L53 22 L54 26 L50 24 L46 26 L47 22 L44 19 L48 18 Z" fill="url(#njGoldGrad)" />
+
+            <!-- Stylized Monogram N & J Interlocking -->
+            <!-- Letter N -->
+            <path d="M 27 68 L 27 34 L 33 34 L 50 58 L 50 34 L 56 34 L 56 68 L 50 68 L 33 44 L 33 68 Z" fill="url(#njGoldGrad)" />
+            <!-- Letter J (sweeping curve interlocking with N) -->
+            <path d="M 64 34 L 70 34 L 70 61 C 70 67 65 72 58 72 C 53 72 49 69 47 66 L 51 62 C 52 64 55 66 58 66 C 62 66 64 64 64 60 Z" fill="#ffffff" />
+          </svg>
+        </div>
+        <div class="brand-text-block">
+          <span class="brand-title">NJ MALL</span>
+          <span class="brand-subtitle">The Grand Luxury Arcade</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#collection" class="nav-link active">Collections</a></li>
+          <li><a href="#manifesto" class="nav-link">About NJ Mall</a></li>
+          <li><a href="#reviews" class="nav-link">Customer Reviews</a></li>
+          <li><a href="#circle" class="nav-link">VIP Lounge</a></li>
+        </ul>
+      </nav>
+
+      <!-- Action Items -->
+      <div class="nav-actions">
+        <!-- Admin Gate Button -->
+        <button id="btn-admin-gate" class="btn-admin-gate" title="Admin Control Portal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Admin Portal</span>
+        </button>
+
+        <!-- Currency Picker (Default INR ₹) -->
+        <div class="currency-select-wrap">
+          <select id="currency-selector" class="currency-select" aria-label="Choose Currency">
+            <option value="INR" selected>INR (₹) India</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+          </select>
+        </div>
+
+        <!-- Ambient Soundscape Toggle -->
+        <button id="audio-toggle-btn" class="sound-toggle-btn" title="Toggle tactile soundscapes" aria-label="Soundscape toggle">
+          <div class="sound-waves">
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+          </div>
+          <span>Ambience</span>
+        </button>
+
+        <!-- Wishlist Button -->
+        <button id="header-wishlist-btn" class="icon-btn" title="Wishlist" aria-label="Wishlist">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span id="wishlist-count-badge" class="nav-badge" style="display: none;">0</span>
+        </button>
+
+        <!-- Shopping Bag Trigger -->
+        <button id="header-bag-btn" class="icon-btn" title="Shopping Bag" aria-label="Shopping Bag">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span id="bag-count-badge" class="nav-badge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-creator-badge">
+        <span>✦</span> Welcome to NJ Mall — Curated Luxury & Rare Finds
+      </div>
+
+      <h1 class="hero-title">
+        The Premier Destination for<br /><em>Exceptional Living</em>
+      </h1>
+
+      <p class="hero-desc">
+        Discover hand-selected kinetic mechanics, wood-fired ceramic vessels, amber resonance lighting, and bespoke executive writing instruments. All priced in Indian Rupees with insured Pan-India express delivery.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#collection" class="btn btn-primary btn-large">
+          <span>Explore NJ Mall Products</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="#manifesto" class="btn btn-secondary btn-large">
+          <span>The NJ Mall Pledge</span>
+        </a>
+      </div>
+
+      <!-- Mall Value Commitments -->
+      <div class="hero-features-bar">
+        <div class="hero-feat">
+          <div class="feat-glyph">₹</div>
+          <div class="feat-text">
+            <h4>Transparent Rupee Pricing</h4>
+            <p>All taxes included; zero hidden checkout charges</p>
+          </div>
+        </div>
+        <div class="hero-feat">
+          <div class="feat-glyph">⚡</div>
+          <div class="feat-text">
+            <h4>Free Express Shipping</h4>
+            <p>Pan-India insured courier dispatch over ₹2,999</p>
+          </div>
+        </div>
+        <div class="hero-feat">
+          <div class="feat-glyph">🛡️</div>
+          <div class="feat-text">
+            <h4>100% Genuine Certified</h4>
+            <p>Every piece serialized with authentic holographic seal</p>
+          </div>
+        </div>
+        <div class="hero-feat">
+          <div class="feat-glyph">👑</div>
+          <div class="feat-text">
+            <h4>Admin Managed Catalog</h4>
+            <p>Curated and updated live by our store administrator</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Catalog Section -->
+  <section id="collection" class="catalog-section">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Curated Department Stores</span>
+        <h2 class="section-title">NJ Mall Showroom</h2>
+        <p class="section-subtitle">
+          Explore our premier artifacts. Use the filters below or search instantly by name, department, or keyword.
+        </p>
+      </div>
+
+      <!-- Filter & Search Toolbar -->
+      <div class="filter-toolbar">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-category="all">All Departments</button>
+          <button class="filter-tab" data-category="electronics">Kinetic & Gadgets</button>
+          <button class="filter-tab" data-category="living">Living Ceramics</button>
+          <button class="filter-tab" data-category="ambient">Ambient Lighting</button>
+          <button class="filter-tab" data-category="fragrance">Luxury Fragrance</button>
+          <button class="filter-tab" data-category="fashion">Accessories & Writing</button>
+        </div>
+
+        <div class="filter-search-group">
+          <div class="search-box">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="catalog-search-input" placeholder="Search products in NJ Mall..." />
+          </div>
+
+          <select id="sort-selector" class="sort-select" aria-label="Sort products">
+            <option value="featured">Featured Picks</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Customer Rating</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Products Dynamic Grid -->
+      <div id="products-grid" class="products-grid">
+        <!-- Populated dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- About NJ Mall Section -->
+  <section id="manifesto" class="manifesto-section">
+    <div class="container">
+      <div class="manifesto-grid">
+        <div class="manifesto-visual">
+          <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1000&q=80" alt="Master artisan hands crafting artifacts" class="manifesto-img" />
+          <div class="manifesto-floating-quote">
+            <p>"At NJ Mall, luxury is not mass consumption. It is the joy of holding an object that took dozens of hours of focused human reverence to bring to life."</p>
+            <span class="manifesto-author">— NJ Mall Executive Curator</span>
+          </div>
+        </div>
+
+        <div class="manifesto-text">
+          <span class="section-tag">About NJ Mall</span>
+          <h2>A Modern Sanctuary for Discerning Tastes</h2>
+          <p>
+            NJ Mall was founded to bridge the gap between world-class artisan craft and seamless modern shopping. We hand-select small-batch creators, precision machinists, and master ceramicists to bring rare artifacts directly to your home.
+          </p>
+          <p>
+            Whether it is an anagama wood-fired tea vessel with 24k gold kintsugi, an alabaster lamp sculpted in Spain, or a near-frictionless kinetic gyroscope machined from solid brass, every item in NJ Mall is backed by our full authenticity covenant.
+          </p>
+
+          <div class="creator-stats">
+            <div class="stat-item">
+              <h3>₹0</h3>
+              <span>Shipping Fee Over ₹2,999</span>
+            </div>
+            <div class="stat-item">
+              <h3>100%</h3>
+              <span>Inspected & Numbered</span>
+            </div>
+            <div class="stat-item">
+              <h3>4.95★</h3>
+              <span>Customer Satisfaction</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews / Testimonials -->
+  <section id="reviews" class="reviews-section">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Verified Customer Stories</span>
+        <h2 class="section-title">Loved by Connoisseurs Across India</h2>
+        <p class="section-subtitle">Real experiences shared by collectors and verified shoppers at NJ Mall.</p>
+      </div>
+
+      <div class="reviews-grid">
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-body">
+            "Ordered the Celestial Gyroscope from NJ Mall for my Bangalore studio. Delivered within 48 hours in gorgeous timber packaging. The brass build quality and silent 40-minute spin are simply hypnotic!"
+          </p>
+          <div class="review-author-wrap">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Arjun R." class="review-avatar" />
+            <div class="author-info">
+              <h4>Arjun Ramanathan</h4>
+              <span>Tech Founder · Bangalore</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-body">
+            "The Nocturne Tea Vessel with 24k gold kintsugi has become my favorite morning possession. The volcanic stoneware feels incredible in hand. NJ Mall customer service was stellar throughout."
+          </p>
+          <div class="review-author-wrap">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Ananya S." class="review-avatar" />
+            <div class="author-info">
+              <h4>Ananya Sharma</h4>
+              <span>Interior Architect · Mumbai</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-body">
+            "The Lumina Alabaster Lamp emits the coziest amber glow I have ever seen. Unboxing it was like opening a piece of museum art. Highly recommend NJ Mall for authentic luxury lifestyle pieces."
+          </p>
+          <div class="review-author-wrap">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="Vikram M." class="review-avatar" />
+            <div class="author-info">
+              <h4>Vikram Malhotra</h4>
+              <span>Creative Director · New Delhi</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIP Lounge Newsletter Section -->
+  <section id="circle" class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box">
+        <span class="section-tag">NJ Mall VIP Privilege</span>
+        <h2 class="section-title">Join the NJ Mall Club</h2>
+        <p>
+          Receive private invitations to limited-edition drops, flash privileges, and secret arrivals. Enjoy 10% off your first acquisition today with promo code <strong>NJ10</strong>.
+        </p>
+
+        <form id="newsletter-form" class="newsletter-form">
+          <input type="email" id="newsletter-email" placeholder="Enter your email address..." required />
+          <button type="submit" class="btn btn-primary">
+            <span>Join VIP Club</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo" style="margin-bottom: 1rem;">
+            <div class="nj-emblem-wrap" style="width: 32px; height: 32px;">
+              <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+                <polygon points="50,4 96,27 96,73 50,96 4,73 4,27" fill="#121520" stroke="#e0b955" stroke-width="3" />
+                <text x="50" y="65" font-family="Cinzel, serif" font-weight="bold" font-size="44" fill="#e0b955" text-anchor="middle">NJ</text>
+              </svg>
+            </div>
+            <span class="brand-title" style="font-size: 1.15rem;">NJ MALL</span>
+          </div>
+          <p style="font-size: 0.85rem; max-width: 300px;">
+            The Grand Luxury Arcade. Curated objects of wonder, tactile kinetic art, and living relics with Pan-India dispatch.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Departments</h4>
+          <ul>
+            <li><a href="#collection">Kinetic & Gadgets</a></li>
+            <li><a href="#collection">Living Ceramics</a></li>
+            <li><a href="#collection">Ambient Lighting</a></li>
+            <li><a href="#collection">Luxury Fragrance</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Client Services</h4>
+          <ul>
+            <li><a href="#manifesto">About NJ Mall</a></li>
+            <li><a href="#reviews">Verified Reviews</a></li>
+            <li><a href="javascript:void(0)" onclick="alert('Standard Pan-India courier dispatch takes 2-4 business days. Tracking details sent via SMS/Email.')">Pan-India Courier</a></li>
+            <li><a href="javascript:void(0)" onclick="alert('30-day return policy on all products returned in original Paulownia timber box.')">Returns & Warranty</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Store Admin</h4>
+          <ul>
+            <li><a href="javascript:void(0)" onclick="document.getElementById('btn-admin-gate').click()">Admin Portal Login</a></li>
+            <li><a href="javascript:void(0)" onclick="alert('Admin passcode is: admin123')">Admin Help & Passcode</a></li>
+            <li><a href="javascript:void(0)" onclick="alert('Contact store management at: support@njmall.in')">Support Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 NJ Mall Pvt. Ltd. All rights reserved. Pan-India Luxury Arcade.</span>
+        <span>Rendered in Indian Rupees (INR ₹) · Admin Powered Catalog</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Slide-Over Shopping Drawer -->
+  <div id="drawer-overlay" class="drawer-overlay"></div>
+
+  <aside id="cart-drawer" class="cart-drawer" aria-label="Shopping Bag">
+    <div class="drawer-header">
+      <h3 class="drawer-title">Shopping Bag</h3>
+      <button id="close-drawer-btn" class="close-btn" aria-label="Close bag">&times;</button>
+    </div>
+
+    <!-- Free Delivery Progress Bar (₹2,999 Target) -->
+    <div class="shipping-meter">
+      <div class="meter-track">
+        <div id="free-shipping-progress" class="meter-bar"></div>
+      </div>
+      <div id="free-shipping-msg" class="shipping-msg">
+        Add <strong>₹2,999</strong> more for Free Express Delivery across India.
+      </div>
+    </div>
+
+    <!-- Scrollable Items Container -->
+    <div id="cart-drawer-items" class="drawer-body">
+      <!-- Injected by app.js -->
+    </div>
+
+    <!-- Drawer Footer -->
+    <div class="drawer-footer">
+      <div class="promo-wrap">
+        <input type="text" id="promo-code-input" placeholder="Promo code (e.g. NJ10, NJVIP)" />
+        <button id="apply-promo-btn" class="btn btn-secondary">Apply</button>
+      </div>
+
+      <div class="drawer-math-row">
+        <span>Subtotal</span>
+        <span id="cart-drawer-subtotal">₹0</span>
+      </div>
+
+      <div class="drawer-math-row">
+        <span>Discount</span>
+        <span id="cart-drawer-discount" style="color: var(--accent-amber);">- ₹0</span>
+      </div>
+
+      <div class="drawer-math-row total-row">
+        <span>Total Investment</span>
+        <span id="cart-drawer-total">₹0</span>
+      </div>
+
+      <button id="cart-checkout-btn" class="btn btn-primary btn-large" style="width: 100%; margin-top: 1.25rem;">
+        <span>Proceed to Checkout</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Quick View Modal -->
+  <div id="quickview-modal" class="modal-overlay" aria-modal="true" role="dialog">
+    <div class="modal-panel">
+      <button id="close-quickview-btn" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+      <div id="quickview-content">
+        <!-- Injected by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkout-modal" class="modal-overlay" aria-modal="true" role="dialog">
+    <div class="modal-panel checkout-modal-panel">
+      <button id="close-checkout-btn" class="modal-close-btn" aria-label="Close checkout">&times;</button>
+      
+      <div id="checkout-content-body">
+        <h2 class="checkout-form-title">NJ Mall Express Checkout</h2>
+        
+        <div class="checkout-grid">
+          <!-- Form Section -->
+          <form id="checkout-form" class="checkout-form">
+            <div class="form-group">
+              <label class="form-label" for="cust-name">Customer Full Name</label>
+              <input type="text" id="cust-name" class="form-input" required placeholder="Full Name" value="Aarav Sharma" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="cust-email">Email Address</label>
+              <input type="email" id="cust-email" class="form-input" required placeholder="name@domain.com" value="aarav.sharma@gmail.com" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="cust-address">Delivery Address</label>
+              <input type="text" id="cust-address" class="form-input" required placeholder="Flat, Building, Street" value="Flat 402, Royal Palms Residency, Indiranagar" />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="cust-city">City / State</label>
+                <input type="text" id="cust-city" class="form-input" required value="Bengaluru, Karnataka" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cust-postal">PIN Code</label>
+                <input type="text" id="cust-postal" class="form-input" required value="560038" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="cust-card">UPI / Card Payment (Simulation)</label>
+              <input type="text" id="cust-card" class="form-input" required value="aarav@okhdfcbank (UPI Verified)" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: 1rem;">
+              <span>Confirm Order & Pay (₹)</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </button>
+          </form>
+
+          <!-- Order Summary Side -->
+          <div class="checkout-summary-box">
+            <h3 style="font-size: 1.1rem; color: var(--accent-cream); margin-bottom: 1rem;">Order Summary</h3>
+            <div id="checkout-summary-items" class="checkout-summary-items">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div class="drawer-math-row">
+              <span>Items Total</span>
+              <span id="checkout-subtotal">₹0</span>
+            </div>
+            <div class="drawer-math-row">
+              <span>Coupon Discount</span>
+              <span id="checkout-discount" style="color: var(--accent-amber);">- ₹0</span>
+            </div>
+            <div class="drawer-math-row">
+              <span>Express Delivery</span>
+              <span id="checkout-shipping">Free Delivery</span>
+            </div>
+            <div class="drawer-math-row total-row">
+              <span>Total Payable</span>
+              <span id="checkout-total">₹0</span>
+            </div>
+
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1.5rem; line-height: 1.5;">
+              ✦ Insured packaging with tamper-evident security seal.<br/>
+              ✦ Express courier dispatch from NJ Mall Bangalore Hub.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN LOGIN MODAL -->
+  <div id="admin-login-modal" class="modal-overlay" aria-modal="true" role="dialog">
+    <div class="modal-panel admin-modal-panel">
+      <button id="close-admin-login-btn" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+      
+      <div class="admin-icon-crown">👑</div>
+      <h2 style="font-size: 1.5rem; margin-bottom: 0.4rem;">NJ Mall Admin Portal</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+        Authenticate to unlock administrative capabilities: adding new products, adjusting inventory, and catalog maintenance.
+      </p>
+
+      <form id="admin-login-form">
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label" for="admin-pass-input">Admin Passcode</label>
+          <input type="password" id="admin-pass-input" class="form-input" placeholder="Enter admin passcode (e.g. admin123)" required autofocus />
+          <span style="font-size: 0.72rem; color: var(--accent-amber); display: block; margin-top: 0.4rem;">
+            Default Passcode: <strong>admin123</strong>
+          </span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large w-full mt-3">
+          <span>Authenticate as Admin</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN ADD PRODUCT MODAL -->
+  <div id="add-product-modal" class="modal-overlay" aria-modal="true" role="dialog">
+    <div class="modal-panel admin-add-modal-panel">
+      <button id="close-add-product-btn" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+      
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+        <span style="font-size: 1.5rem; color: var(--accent-emerald);">✦</span>
+        <h2 style="font-size: 1.6rem; color: #fff;">Add New Product to NJ Mall</h2>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.8rem;">
+        Only authorized administrators can publish new inventory. This item will appear live in the customer catalog with Indian Rupee pricing.
+      </p>
+
+      <form id="add-product-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="prod-name">Product Name *</label>
+            <input type="text" id="prod-name" class="form-input" required placeholder="e.g. Royal Tourbillon Chronograph" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-category">Department / Category *</label>
+            <select id="prod-category" class="form-select" required>
+              <option value="electronics">Kinetic & Gadgets</option>
+              <option value="living">Living Ceramics</option>
+              <option value="ambient">Ambient Lighting</option>
+              <option value="fragrance">Luxury Fragrance</option>
+              <option value="fashion">Accessories & Writing</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="prod-price">Price in Indian Rupees (INR ₹) *</label>
+            <input type="number" id="prod-price" class="form-input" required min="1" step="1" placeholder="e.g. 15999" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-stock">Units in Stock *</label>
+            <input type="number" id="prod-stock" class="form-input" required min="1" value="12" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="prod-badge">Badge (e.g. Bestseller, New, 24k Gold)</label>
+            <input type="text" id="prod-badge" class="form-input" placeholder="New Arrival" value="New Arrival" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-tag">Tag (e.g. Limited Edition, Hand-Carved)</label>
+            <input type="text" id="prod-tag" class="form-input" placeholder="NJ Exclusive" value="NJ Exclusive" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="prod-image">Product Image URL *</label>
+          <input type="url" id="prod-image" class="form-input" required placeholder="https://images.unsplash.com/..." value="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1000&q=80" />
+          <div class="admin-preset-strip">
+            <span style="font-size: 0.72rem; color: var(--text-muted); align-self: center;">Quick image presets:</span>
+            <span class="admin-preset-chip" data-url="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1000&q=80">Luxury Watch</span>
+            <span class="admin-preset-chip" data-url="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=80">Hi-Fi Audio</span>
+            <span class="admin-preset-chip" data-url="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=1000&q=80">Smart Gadget</span>
+            <span class="admin-preset-chip" data-url="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1000&q=80">Apothecary</span>
+            <span class="admin-preset-chip" data-url="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1000&q=80">Art Piece</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="prod-tagline">Short Tagline *</label>
+          <input type="text" id="prod-tagline" class="form-input" required placeholder="A brief one-sentence appeal for the customer..." />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="prod-story">Product Story & Craftsmanship</label>
+          <textarea id="prod-story" class="form-textarea" placeholder="Detail the materials, heritage, mechanism, and care instructions..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-secondary flex-1" onclick="document.getElementById('close-add-product-btn').click()">Cancel</button>
+          <button type="submit" class="btn btn-emerald btn-large flex-1">
+            <span>Publish to NJ Mall</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="products.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
